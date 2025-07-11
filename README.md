@@ -81,7 +81,7 @@ npm run dev
 - Clean and maintainable code
 
 ### Available Scripts
-
+- `npm i` - Install Dependies
 - `npm run dev` - Start development server
 - `npm run build` - Build for production
 - `npm run start` - Start production server
