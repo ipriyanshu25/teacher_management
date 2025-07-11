@@ -1,10 +1,20 @@
+'use client';
+
 import * as React from 'react';
 import { ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { ButtonProps, buttonVariants } from '@/components/ui/button';
+import { buttonVariants } from '@/components/ui/button';
+import type { VariantProps } from 'class-variance-authority';
 
-const Pagination = ({ className, ...props }: React.ComponentProps<'nav'>) => (
+/* ---------------------------------------------------------------------------
+ * Pagination container
+ * -------------------------------------------------------------------------*/
+
+const Pagination = ({
+  className,
+  ...props
+}: React.ComponentProps<'nav'>) => (
   <nav
     role="navigation"
     aria-label="pagination"
@@ -13,6 +23,10 @@ const Pagination = ({ className, ...props }: React.ComponentProps<'nav'>) => (
   />
 );
 Pagination.displayName = 'Pagination';
+
+/* ---------------------------------------------------------------------------
+ * Content & list items
+ * -------------------------------------------------------------------------*/
 
 const PaginationContent = React.forwardRef<
   HTMLUListElement,
@@ -34,30 +48,34 @@ const PaginationItem = React.forwardRef<
 ));
 PaginationItem.displayName = 'PaginationItem';
 
+/* ---------------------------------------------------------------------------
+ * Link
+ * -------------------------------------------------------------------------*/
+
 type PaginationLinkProps = {
+  /** highlight the current page */
   isActive?: boolean;
-} & Pick<ButtonProps, 'size'> &
+} & VariantProps<typeof buttonVariants> & // gives us `size`, `variant`, etc.
   React.ComponentProps<'a'>;
 
 const PaginationLink = ({
   className,
   isActive,
   size = 'icon',
+  variant = isActive ? 'outline' : 'ghost',
   ...props
 }: PaginationLinkProps) => (
   <a
     aria-current={isActive ? 'page' : undefined}
-    className={cn(
-      buttonVariants({
-        variant: isActive ? 'outline' : 'ghost',
-        size,
-      }),
-      className
-    )}
+    className={cn(buttonVariants({ variant, size }), className)}
     {...props}
   />
 );
 PaginationLink.displayName = 'PaginationLink';
+
+/* ---------------------------------------------------------------------------
+ * Previous / Next helpers
+ * -------------------------------------------------------------------------*/
 
 const PaginationPrevious = ({
   className,
@@ -91,6 +109,10 @@ const PaginationNext = ({
 );
 PaginationNext.displayName = 'PaginationNext';
 
+/* ---------------------------------------------------------------------------
+ * Ellipsis
+ * -------------------------------------------------------------------------*/
+
 const PaginationEllipsis = ({
   className,
   ...props
@@ -105,6 +127,10 @@ const PaginationEllipsis = ({
   </span>
 );
 PaginationEllipsis.displayName = 'PaginationEllipsis';
+
+/* ---------------------------------------------------------------------------
+ * Exports
+ * -------------------------------------------------------------------------*/
 
 export {
   Pagination,
